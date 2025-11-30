@@ -1,0 +1,25 @@
+{
+    "draw": {
+        "toolbar": {
+            "actions": {
+                "title": "Cancelar dibujo",
+                "text": "Cancelar"
+            },
+            "finish": {
+                "title": "Finalizar dibujo",
+                "text": "Terminar"
+            },
+            "undo": {
+                "title": "Eliminar último punto",
+                "text": "Deshacer"
+            },
+            "buttons": {
+                "polyline": "Dibujar línea",
+                "polygon": "Dibujar polígono",
+                "rectangle": "Dibujar rectángulo",
+                "circle": "Dibujar círculo",
+                "marker": "Agregar marcador"
+            }
+        }
+    }
+}
