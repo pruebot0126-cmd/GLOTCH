@@ -1,1 +1,15 @@
+.leaflet-draw-section {
+    position: relative;
+}
+.leaflet-draw-toolbar a {
+    background-color: #fff;
+    width: 26px;
+    height: 26px;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    display: block;
+}
+.leaflet-draw-toolbar .leaflet-draw-draw-polygon {
+    background-image: url('data:image/svg+xml;utf8,<svg ...>');
+}
 
