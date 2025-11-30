@@ -1,1 +1,32 @@
+.leaflet-pane,.leaflet-tile,.leaflet-marker-icon,.leaflet-marker-shadow,
+.leaflet-tile-container,.leaflet-pane > svg,.leaflet-pane > canvas,
+.leaflet-zoom-box,.leaflet-image-layer,.leaflet-layer {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+.leaflet-container {
+    overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
+    outline: 0;
+}
+.leaflet-control {
+    position: relative;
+    z-index: 800;
+    pointer-events: auto;
+}
+.leaflet-top,.leaflet-bottom {
+    position: absolute;
+    z-index: 1000;
+    pointer-events: none;
+}
+.leaflet-top { top: 0; }
+.leaflet-bottom { bottom: 0; }
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+    font-size: 18px;
+    width: 26px;
+    height: 26px;
+    line-height: 26px;
+}
 
