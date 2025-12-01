@@ -3,135 +3,135 @@
 // ===============================
 const map = L.map("map").setView([19.4326, -99.1332], 14);
 
-// Capas
 const street = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
-const sat = L.tileLayer(
+const satellite = L.tileLayer(
   "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
 );
 
-let satelliteMode = false;
+let satMode = false;
 
 // ===============================
-// GRUPOS
+// DIBUJO
 // ===============================
-const drawnItems = new L.FeatureGroup();
-map.addLayer(drawnItems);
+const drawnItems = new L.FeatureGroup().addTo(map);
 
-// ===============================
-// CONTROLES DE DIBUJO
-// ===============================
 const drawControl = new L.Control.Draw({
-  draw: {
-    polygon: true,
-    polyline: false,
-    rectangle: false,
-    marker: false,
-    circle: false,
-    circlemarker: false,
-  },
+  draw: { polygon: true, polyline: false, rectangle: false, circle: false, marker: false },
   edit: { featureGroup: drawnItems }
 });
 map.addControl(drawControl);
 
-let currentShape = null;
-let savedShapes = [];
+let currentLayer = null;
 
 // ===============================
-// CUANDO SE CREA UNA FORMA
+// POLÍGONO NUEVO
 // ===============================
-map.on("draw:created", function (event) {
-  const layer = event.layer;
-
-  enableDragging(layer);
+map.on("draw:created", e => {
+  const layer = e.layer;
   drawnItems.addLayer(layer);
 
-  currentShape = layer.toGeoJSON();
+  enableDrag(layer);
+
+  currentLayer = layer;
 
   updateArea(layer);
 });
 
 // ===============================
-// CALCULAR ÁREA
+// ÁREA
 // ===============================
 function updateArea(layer) {
-  const area = turf.area(layer.toGeoJSON());
-  document.getElementById("area").textContent = area.toFixed(2);
-  document.getElementById("hectareas").textContent = (area / 10000).toFixed(4);
+  const geo = layer.toGeoJSON();
+  const area = turf.area(geo);
+
+  document.getElementById("area").innerText = area.toFixed(2);
+  document.getElementById("ha").innerText = (area / 10000).toFixed(4);
 }
 
 // ===============================
-// GUARDAR
+// DRAG UNIVERSAL (PC, MAC, ANDROID)
 // ===============================
-document.getElementById("saveShapeBtn").onclick = () => {
-  if (!currentShape) return alert("Dibuja una forma primero.");
+function enableDrag(layer) {
+  let dragging = false;
+  let last = null;
 
-  savedShapes.push(currentShape);
-  localStorage.setItem("glotch_shapes", JSON.stringify(savedShapes));
-  alert("Guardado.");
-};
-
-// ===============================
-// CARGAR
-// ===============================
-document.getElementById("loadShapeBtn").onclick = () => {
-  const data = localStorage.getItem("glotch_shapes");
-  if (!data) return alert("Sin formas guardadas.");
-
-  savedShapes = JSON.parse(data);
-  drawnItems.clearLayers();
-
-  savedShapes.forEach(shape => {
-    const layer = L.geoJSON(shape).getLayers()[0];
-    enableDragging(layer);
-    drawnItems.addLayer(layer);
+  layer.on("mousedown touchstart", e => {
+    dragging = true;
+    last = e.latlng;
   });
 
-  alert("Cargadas.");
-};
+  map.on("mousemove touchmove", e => {
+    if (!dragging) return;
 
-// ===============================
-// COMPARAR
-// ===============================
-document.getElementById("compareShapesBtn").onclick = () => {
-  if (savedShapes.length < 2)
-    return alert("Se necesitan 2 formas.");
+    const lat = e.latlng.lat - last.lat;
+    const lng = e.latlng.lng - last.lng;
 
-  const A = savedShapes[savedShapes.length - 2];
-  const B = savedShapes[savedShapes.length - 1];
+    const pts = layer.getLatLngs()[0].map(p => L.latLng(p.lat + lat, p.lng + lng));
+    layer.setLatLngs([pts]);
+    layer.redraw();
 
-  const areaA = turf.area(A);
-  const areaB = turf.area(B);
+    last = e.latlng;
+  });
 
-  alert(`
-A: ${(areaA/10000).toFixed(2)} ha
-B: ${(areaB/10000).toFixed(2)} ha
-Dif: ${((areaB-areaA)/10000).toFixed(2)} ha
-  `);
-};
-
-// ===============================
-// ARRÁSTRAR POLÍGONOS (ANDROID + iOS + PC)
-// ===============================
-function enableDragging(layer) {
-  if (layer.dragging) {
-    layer.dragging.enable();
-  } else if (layer._path) {
-    L.Path.Drag(layer);
-  }
+  map.on("mouseup touchend", () => dragging = false);
 }
 
 // ===============================
-// VISTA SATELITAL
+// GUARDAR FORMAS
 // ===============================
-document.getElementById("toggleMapBtn").onclick = () => {
-  if (satelliteMode) {
-    map.removeLayer(sat);
+document.getElementById("guardar").onclick = () => {
+  const shapes = drawnItems.toGeoJSON();
+  localStorage.setItem("formas", JSON.stringify(shapes));
+  alert("Formas guardadas.");
+};
+
+// ===============================
+// CARGAR FORMAS
+// ===============================
+document.getElementById("cargar").onclick = () => {
+  drawnItems.clearLayers();
+
+  const data = localStorage.getItem("formas");
+  if (!data) return alert("No hay formas guardadas.");
+
+  const shapes = JSON.parse(data);
+
+  L.geoJSON(shapes, {
+    onEachFeature: (feature, layer) => enableDrag(layer)
+  }).addTo(drawnItems);
+};
+
+// ===============================
+// VISTA SATÉLITE
+// ===============================
+document.getElementById("vista").onclick = () => {
+  if (satMode) {
+    map.removeLayer(satellite);
     map.addLayer(street);
-    toggleMapBtn.textContent = "Vista Satélite";
+    satMode = false;
   } else {
     map.removeLayer(street);
-    map.addLayer(sat);
-    toggleMapBtn.textContent = "Vista Mapa";
+    map.addLayer(satellite);
+    satMode = true;
   }
-  satelliteMode = !satelliteMode;
+};
+
+// ===============================
+// MEDIR DISTANCIA
+// ===============================
+document.getElementById("distancia").onclick = () => {
+  alert("Modo distancia: toca dos puntos en el mapa.");
+
+  let clicks = [];
+
+  map.once("click", e1 => {
+    clicks.push(e1.latlng);
+
+    map.once("click", e2 => {
+      clicks.push(e2.latlng);
+
+      const dist = map.distance(clicks[0], clicks[1]) / 1000;
+      alert(`Distancia: ${dist.toFixed(3)} km`);
+    });
+  });
 };
