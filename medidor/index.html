@@ -1,35 +1,12 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Medidor de Terrenos - Glotch</title>
-
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css">
-
-  <link rel="stylesheet" href="style.css">  
-</head>
-
-<body>
-
-<div id="panel">
-  <p><b>Área:</b> <span id="area">0</span> m²</p>
-  <p><b>Hectáreas:</b> <span id="ha">0</span> ha</p>
-
-  <button id="vista">Vista Satélite</button>
-  <button id="guardar">Guardar</button>
-  <button id="cargar">Cargar</button>
-  <button id="distancia">Medir Distancia</button>
-</div>
-
-<div id="map"></div>
-
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+<!-- opcional: traducción draw es -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.es.js"></script>
+<!-- turf para áreas y distancias -->
 <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
-
+<!-- (opcional) plugin Path Drag si lo quieres (no es obligatorio por el fallback) -->
+<script src="https://unpkg.com/leaflet-path-drag/dist/L.Path.Drag.js"></script>
+<!-- finalmente: -->
 <script src="app.js"></script>
-
-</body>
-</html>
