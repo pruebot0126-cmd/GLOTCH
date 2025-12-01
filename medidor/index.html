@@ -1,42 +1,35 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Glotch – Medidor de Terrenos</title>
+  <title>Medidor de Terrenos - Glotch</title>
 
-  <!-- Leaflet -->
-  <link rel="stylesheet" href="../libs/leaflet.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css">
 
-  <!-- Leaflet Draw -->
-  <link rel="stylesheet" href="../libs/leaflet.draw.css">
-
-  <!-- Estilos personalizados -->
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css">  
 </head>
 
 <body>
 
-  <div id="top-panel">
-    <h2>Área: <span id="area">0</span> m²</h2>
-    <h3>Hectáreas: <span id="hectareas">0</span></h3>
+<div id="panel">
+  <p><b>Área:</b> <span id="area">0</span> m²</p>
+  <p><b>Hectáreas:</b> <span id="ha">0</span> ha</p>
 
-    <button id="toggleMapBtn">Vista Satélite</button>
-    <button id="measureDistanceBtn">Medir Distancia</button>
-    <button id="saveShapeBtn">Guardar</button>
-    <button id="loadShapeBtn">Cargar</button>
-    <button id="compareShapesBtn">Comparar</button>
-  </div>
+  <button id="vista">Vista Satélite</button>
+  <button id="guardar">Guardar</button>
+  <button id="cargar">Cargar</button>
+  <button id="distancia">Medir Distancia</button>
+</div>
 
-  <div id="map"></div>
+<div id="map"></div>
 
-  <!-- JS -->
-  <script src="../libs/leaflet.js"></script>
-  <script src="../libs/leaflet.draw.js"></script>
-  <script src="../libs/leaflet.path.drag.js"></script>
-  <script src="../libs/turf.min.js"></script>
-  <script src="app.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
+
+<script src="app.js"></script>
+
 </body>
-
 </html>
