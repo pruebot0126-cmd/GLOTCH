@@ -1,38 +1,21 @@
 body, html {
-    margin: 0;
-    height: 100%;
-    overflow: hidden;
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
 
 #map {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100vh;
 }
 
-#tools {
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    background: white;
-    padding: 10px;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px #0003;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+#panel {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  background: white;
+  padding: 12px;
+  border-radius: 8px;
+  z-index: 9999;
+  font-size: 14px;
 }
-
-#logo {
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    background: white;
-    padding: 5px;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px #0003;
-}
-
-#logo img {
-    width: 120px;
-}
-
